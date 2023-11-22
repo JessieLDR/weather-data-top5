@@ -5,3 +5,4 @@ pytest-cov==4.1.0
 mypy==1.5.1
 requests==2.31.0
 httpx==0.25.0
+pandas==2.1.3

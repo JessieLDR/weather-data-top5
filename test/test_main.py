@@ -1,15 +1,12 @@
+from unittest.mock import patch
+from pandas import DataFrame
 from fastapi.testclient import TestClient
-
 from main import app
 
-
 def test_main():
-    # Test Client as a context tests startup and shutdown events.
-    # https://fastapi.tiangolo.com/advanced/testing-events/
     with TestClient(app) as client:
         response = client.get("/")
         assert response.status_code == 200
-
 
 SPP_PEAKS = [
     {"usage_kw": 996.0, "market_name": "spp", "timestamp": "2022-07-26T13:48:00"},
@@ -19,9 +16,19 @@ SPP_PEAKS = [
     {"usage_kw": 977.0, "market_name": "spp", "timestamp": "2022-07-04T15:09:40"},
 ]
 
-
 def test_read_spp_peaks():
     with TestClient(app) as client:
         response = client.get("/peaks?market_name=spp")
         assert response.status_code == 200
         assert response.json() == SPP_PEAKS
+
+def test_missing_market_name():
+    with TestClient(app) as client:
+        response = client.get("/peaks")
+        assert response.status_code == 422
+
+def test_invalid_market_name():
+    with TestClient(app) as client:
+        response = client.get("/peaks?market_name=invalid_market")
+        assert response.status_code == 400
+        assert "Invalid market name" in response.json().get("detail")
