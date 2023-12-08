@@ -1,7 +1,3 @@
-# Voltus Take-Home Technical Challenge
-
-Welcome to the take-home portion of the Voltus interview process!
-
 ## Expectations:
 1. Coding portion of this work should take less than one hour.
 1. To keep this challenge scoped, we'd like you to focus specifically on implementing a pattern for returning the data in
